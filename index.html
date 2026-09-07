@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuenta Clara · Finanzas Personales</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="app-header">
+    <div class="container app-header__inner">
+      <div class="app-header__brand">
+        <span class="app-header__mark">CC</span>
+        <div>
+          <p class="app-header__title">Cuenta Clara</p>
+          <p class="app-header__subtitle">Tu balance, sin sorpresas</p>
+        </div>
+      </div>
+      <button id="btnReset" class="btn btn-reset d-none" type="button">
+        <i class="bi bi-arrow-counterclockwise"></i> Reconfigurar
+      </button>
+    </div>
+  </header>
+
+  <main class="container app-main">
+
+    <!-- ===================== VISTA 1: CARACTERIZACIÓN INICIAL ===================== -->
+    <section id="wizardView" class="wizard">
+
+      <div class="wizard__intro">
+        <p class="wizard__eyebrow">Antes de empezar</p>
+        <h1 class="wizard__title">Cuéntanos cómo se ve tu mes</h1>
+        <p class="wizard__lead">Con tus ingresos y gastos fijos armamos tu punto de partida. Esto solo lo haces una vez.</p>
+      </div>
+
+      <!-- Indicador de pasos -->
+      <ol class="steps" id="stepsIndicator">
+        <li class="steps__item is-active" data-step="1"><span>1</span>Ingresos</li>
+        <li class="steps__item" data-step="2"><span>2</span>Gastos fijos</li>
+        <li class="steps__item" data-step="3"><span>3</span>Confirmar</li>
+      </ol>
+
+      <form id="wizardForm" novalidate>
+
+        <!-- PASO 1: INGRESOS -->
+        <div class="wizard-step is-active" data-step="1">
+          <div class="ledger-card">
+            <h2 class="ledger-card__title">Ingresos mensuales</h2>
+            <p class="ledger-card__hint">Ingresa cifras en pesos, sin puntos ni comas.</p>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="ingresoPrincipal" class="form-label">Ingreso mensual principal</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="number" min="0" step="1000" class="form-control" id="ingresoPrincipal" placeholder="Ej. 3500000" required>
+                </div>
+                <div class="invalid-feedback">Ingresa tu ingreso principal para continuar.</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="ingresoAdicional" class="form-label">Ingresos adicionales <span class="text-muted fw-normal">(opcional)</span></label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="number" min="0" step="1000" class="form-control" id="ingresoAdicional" placeholder="Ej. 500000">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wizard-nav">
+            <span></span>
+            <button type="button" class="btn btn-primary-ledger" data-next="2">Siguiente <i class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- PASO 2: GASTOS FIJOS -->
+        <div class="wizard-step" data-step="2">
+          <div class="ledger-card">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+              <div>
+                <h2 class="ledger-card__title">Gastos fijos mensuales</h2>
+                <p class="ledger-card__hint">Arriendo, servicios, internet... todo lo que pagas mes a mes.</p>
+              </div>
+              <button type="button" id="btnAddGasto" class="btn btn-outline-ledger btn-sm">
+                <i class="bi bi-plus-lg"></i> Agregar gasto
+              </button>
+            </div>
+
+            <div id="gastosFijosList" class="gastos-fijos-list"></div>
+            <p id="sinGastosFijos" class="text-muted small mt-2">Aún no has agregado gastos fijos. Usa "Agregar gasto".</p>
+
+            <template id="gastoFijoTemplate">
+              <div class="gasto-fijo-item" data-gasto-id="">
+                <div class="row g-3 align-items-end">
+                  <div class="col-12 col-md-4">
+                    <label class="form-label">Concepto</label>
+                    <input type="text" class="form-control gf-nombre" placeholder="Ej. Arriendo" required>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <label class="form-label">Monto total</label>
+                    <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <input type="number" min="0" step="1000" class="form-control gf-monto" placeholder="0" required>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <div class="form-check form-switch gf-switch">
+                      <input class="form-check-input gf-compartido" type="checkbox" role="switch">
+                      <label class="form-check-label">Compartido</label>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 gf-compartido-detalle d-none">
+                    <label class="form-label">Método</label>
+                    <select class="form-select gf-metodo">
+                      <option value="porcentaje">% que aporto</option>
+                      <option value="personas">N.° de personas</option>
+                    </select>
+                  </div>
+                  <div class="col-6 col-md-1 gf-compartido-valor d-none">
+                    <label class="form-label gf-valor-label">%</label>
+                    <input type="number" min="0" step="1" class="form-control gf-valor" placeholder="0">
+                  </div>
+                  <div class="col-auto ms-auto">
+                    <button type="button" class="btn btn-remove-gasto" title="Eliminar gasto">
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="gf-real-preview text-muted small mt-1"></div>
+              </div>
+            </template>
+          </div>
+
+          <div class="wizard-nav">
+            <button type="button" class="btn btn-outline-ledger" data-prev="1"><i class="bi bi-arrow-left"></i> Atrás</button>
+            <button type="button" class="btn btn-primary-ledger" data-next="3">Siguiente <i class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- PASO 3: CONFIRMAR -->
+        <div class="wizard-step" data-step="3">
+          <div class="ledger-card">
+            <h2 class="ledger-card__title">Revisa tu configuración</h2>
+            <p class="ledger-card__hint">Así se ve tu punto de partida. Puedes ajustar cualquier paso antes de guardar.</p>
+
+            <div class="summary-grid" id="wizardSummary"></div>
+          </div>
+
+          <div class="wizard-nav">
+            <button type="button" class="btn btn-outline-ledger" data-prev="2"><i class="bi bi-arrow-left"></i> Atrás</button>
+            <button type="submit" class="btn btn-save-ledger">
+              <i class="bi bi-check2-circle"></i> Guardar configuración
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ===================== VISTA 2: DASHBOARD ===================== -->
+    <section id="dashboardView" class="dashboard d-none">
+
+      <div class="row g-3 summary-cards">
+        <div class="col-6 col-lg-3">
+          <div class="card summary-card summary-card--income">
+            <div class="card-body">
+              <p class="summary-card__label">Ingresos totales</p>
+              <p class="summary-card__value" id="cardIngresos">$0</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card summary-card summary-card--fixed">
+            <div class="card-body">
+              <p class="summary-card__label">Gastos fijos</p>
+              <p class="summary-card__value" id="cardGastosFijos">$0</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card summary-card summary-card--balance">
+            <div class="card-body">
+              <p class="summary-card__label">Capacidad de ahorro</p>
+              <p class="summary-card__value" id="cardBalance">$0</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card summary-card summary-card--variable">
+            <div class="card-body">
+              <p class="summary-card__label">Gastos variables del mes</p>
+              <p class="summary-card__value" id="cardGastosVariables">$0</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-lg-5">
+          <div class="ledger-card">
+            <h2 class="ledger-card__title">Registrar gasto</h2>
+            <form id="gastoDiarioForm">
+              <div class="mb-3">
+                <label for="gdConcepto" class="form-label">Concepto</label>
+                <input type="text" class="form-control" id="gdConcepto" placeholder="Ej. Almuerzo" required>
+              </div>
+              <div class="mb-3">
+                <label for="gdMonto" class="form-label">Monto</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="number" min="0" step="500" class="form-control" id="gdMonto" placeholder="0" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="gdCategoria" class="form-label">Categoría</label>
+                <select class="form-select" id="gdCategoria">
+                  <option value="Comida">Comida</option>
+                  <option value="Ocio">Ocio</option>
+                  <option value="Transporte">Transporte</option>
+                  <option value="Varios">Varios</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary-ledger w-100">
+                <i class="bi bi-plus-lg"></i> Agregar gasto
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="ledger-card">
+            <h2 class="ledger-card__title">Gastos del mes</h2>
+            <div class="table-responsive">
+              <table class="table table-ledger align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Concepto</th>
+                    <th>Categoría</th>
+                    <th>Fecha</th>
+                    <th class="text-end">Monto</th>
+                    <th class="text-end">Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="gastosDiariosBody"></tbody>
+              </table>
+            </div>
+            <p id="sinGastosDiarios" class="text-muted small mt-3">Todavía no has registrado gastos este mes.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <p>Cuenta Clara — tus datos se guardan solo en este navegador.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

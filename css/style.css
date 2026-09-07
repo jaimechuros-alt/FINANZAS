@@ -1,0 +1,353 @@
+/* =========================================================
+   Cuenta Clara — Design tokens
+   Paleta: papel frío + tinta verde ledger + acento mostaza/óxido
+   Tipografía: Fraunces (display) + Inter (texto)
+   ========================================================= */
+:root {
+  --paper: #f2f1ec;
+  --paper-raised: #fbfaf7;
+  --ink: #1c1f1d;
+  --ink-soft: #565b56;
+  --line: #d9d6cc;
+
+  --ledger-green: #1b5e4f;
+  --ledger-green-dark: #123f35;
+  --mustard: #c99a3b;
+  --rust: #a8452b;
+  --sky: #2f6d8c;
+
+  --radius: 4px;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+/* ===================== HEADER / FOOTER ===================== */
+.app-header {
+  background: var(--ledger-green-dark);
+  border-bottom: 3px solid var(--mustard);
+}
+
+.app-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+}
+
+.app-header__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--mustard);
+  border-radius: 50%;
+  color: var(--mustard);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.app-header__title {
+  margin: 0;
+  color: var(--paper-raised);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: .01em;
+}
+
+.app-header__subtitle {
+  margin: 0;
+  color: #b9c9c2;
+  font-size: .85rem;
+}
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid #3a6a5c;
+  color: #d8e3de;
+  font-size: .9rem;
+  border-radius: var(--radius);
+  padding: .5rem .9rem;
+}
+.btn-reset:hover { background: #2a5147; color: #fff; }
+
+.app-footer {
+  padding: 2rem 0 3rem;
+  color: var(--ink-soft);
+  font-size: .82rem;
+  text-align: center;
+}
+
+.app-main { padding: 2.5rem 0 1rem; max-width: 980px; }
+
+/* ===================== WIZARD ===================== */
+.wizard__eyebrow {
+  font-family: var(--font-body);
+  color: var(--rust);
+  font-weight: 600;
+  font-size: .82rem;
+  margin-bottom: .35rem;
+}
+
+.wizard__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 2.1rem;
+  margin-bottom: .5rem;
+  color: var(--ledger-green-dark);
+}
+
+.wizard__lead {
+  color: var(--ink-soft);
+  max-width: 46ch;
+  margin-bottom: 2rem;
+}
+
+.steps {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0 0 2rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+}
+
+.steps__item {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  color: var(--ink-soft);
+  font-size: .92rem;
+  font-weight: 500;
+}
+
+.steps__item span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  font-size: .82rem;
+  font-family: var(--font-display);
+}
+
+.steps__item.is-active { color: var(--ledger-green-dark); }
+.steps__item.is-active span {
+  background: var(--ledger-green);
+  border-color: var(--ledger-green);
+  color: #fff;
+}
+
+.steps__item.is-done span {
+  background: var(--mustard);
+  border-color: var(--mustard);
+  color: #fff;
+}
+
+.wizard-step { display: none; }
+.wizard-step.is-active { display: block; }
+
+.wizard-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+/* ===================== LEDGER CARD (contenedor base) ===================== */
+.ledger-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.ledger-card__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--ledger-green-dark);
+  margin-bottom: .25rem;
+}
+
+.ledger-card__hint {
+  color: var(--ink-soft);
+  font-size: .88rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-label { font-size: .85rem; font-weight: 500; color: var(--ink); }
+
+.form-control, .form-select {
+  border-radius: var(--radius);
+  border-color: var(--line);
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--ledger-green);
+  box-shadow: 0 0 0 .2rem rgba(27, 94, 79, .15);
+}
+.input-group-text {
+  border-radius: var(--radius) 0 0 var(--radius);
+  background: #eceae2;
+  color: var(--ink-soft);
+  border-color: var(--line);
+}
+
+/* Botones */
+.btn-primary-ledger {
+  background: var(--ledger-green);
+  border: 1px solid var(--ledger-green);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: .55rem 1.1rem;
+  font-weight: 500;
+}
+.btn-primary-ledger:hover { background: var(--ledger-green-dark); color: #fff; }
+
+.btn-outline-ledger {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: .55rem 1.1rem;
+  font-weight: 500;
+}
+.btn-outline-ledger:hover { border-color: var(--ledger-green); color: var(--ledger-green-dark); }
+
+.btn-save-ledger {
+  background: var(--mustard);
+  border: 1px solid var(--mustard);
+  color: #2b2107;
+  border-radius: var(--radius);
+  padding: .6rem 1.3rem;
+  font-weight: 600;
+}
+.btn-save-ledger:hover { filter: brightness(.94); }
+
+.btn-remove-gasto {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--rust);
+  border-radius: var(--radius);
+  width: 38px;
+  height: 38px;
+}
+.btn-remove-gasto:hover { background: #f3e5e0; border-color: var(--rust); }
+
+/* ===================== GASTOS FIJOS (wizard) ===================== */
+.gasto-fijo-item {
+  border-top: 1px dashed var(--line);
+  padding: 1.1rem 0;
+}
+.gasto-fijo-item:first-child { border-top: none; padding-top: .25rem; }
+
+.gf-switch { padding-top: 1.9rem; }
+.gf-real-preview { min-height: 1.1em; }
+
+/* ===================== RESUMEN (paso 3) ===================== */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+}
+.summary-grid__item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+}
+.summary-grid__item span {
+  display: block;
+  font-size: .78rem;
+  color: var(--ink-soft);
+  margin-bottom: .3rem;
+}
+.summary-grid__item strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--ledger-green-dark);
+}
+
+/* ===================== DASHBOARD ===================== */
+.summary-card {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ledger-green);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+}
+.summary-card--income { border-left-color: var(--ledger-green); }
+.summary-card--fixed { border-left-color: var(--rust); }
+.summary-card--balance { border-left-color: var(--mustard); }
+.summary-card--variable { border-left-color: var(--sky); }
+
+.summary-card__label {
+  font-size: .78rem;
+  color: var(--ink-soft);
+  margin-bottom: .35rem;
+}
+.summary-card__value {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+
+.table-ledger {
+  font-size: .92rem;
+}
+.table-ledger thead th {
+  font-weight: 600;
+  font-size: .78rem;
+  color: var(--ink-soft);
+  border-bottom: 2px solid var(--line);
+}
+.table-ledger td { border-color: var(--line); }
+
+.badge-categoria {
+  display: inline-block;
+  padding: .25rem .55rem;
+  border-radius: var(--radius);
+  font-size: .76rem;
+  font-weight: 500;
+}
+.badge-categoria--Comida { background: #fde8d8; color: var(--rust); }
+.badge-categoria--Ocio { background: #e6dcf5; color: #5b3a99; }
+.badge-categoria--Transporte { background: #dcecf5; color: var(--sky); }
+.badge-categoria--Varios { background: #eaeae2; color: var(--ink-soft); }
+
+.btn-delete-row {
+  background: transparent;
+  border: none;
+  color: var(--rust);
+  font-size: 1.05rem;
+  padding: .2rem .4rem;
+}
+.btn-delete-row:hover { color: #7a2e1b; }
+
+@media (max-width: 576px) {
+  .wizard__title { font-size: 1.6rem; }
+  .steps { gap: .8rem; }
+  .steps__item { font-size: .8rem; }
+}
